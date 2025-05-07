@@ -1,0 +1,61 @@
+$(function () {
+    /**
+     * process keep menu main
+     */
+    (function () {
+        if (window.location.pathname === '/') {
+            $('#main-menu li:first').addClass('active');
+        } else {
+            let curUrl = window.location.href;
+            $('#main-menu a').each(function () {
+                let obj = $(this);
+                let href = obj.attr('href');
+                if (href === '/' || href === '#') {
+                    return true; //continue
+                }
+
+                if (curUrl.indexOf(href) !== -1) {
+                    obj.closest('li').addClass('active');
+                    return false; //break
+                }
+            });
+        }
+    })();
+
+    /*** begin: scroll top ***/
+    $(window).scroll(function () {
+        $(this).scrollTop() > 100 ? $(".scroll-to-top").fadeIn() : $(".scroll-to-top").fadeOut()
+    }), $(".scroll-to-top").click(function () {
+        return $("html, body").animate({scrollTop: 0}, 800), !1
+    });
+    /*** end: scroll top ***/
+});
+
+function showOverlay(msg) {
+    if (msg !== undefined) {
+        $('#overlay-text').html(msg);
+    }
+    $('#overlay').show();
+}
+
+function hideOverlay() {
+    $('#overlay').hide();
+}
+
+function isJson(item) {
+    item = typeof item !== "string"
+        ? JSON.stringify(item)
+        : item;
+
+    try {
+        item = JSON.parse(item);
+    } catch (e) {
+        return false;
+    }
+
+    if (typeof item === "object" && item !== null) {
+        return true;
+    }
+
+    return false;
+}
